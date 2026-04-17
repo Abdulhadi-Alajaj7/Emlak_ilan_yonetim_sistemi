@@ -1,0 +1,38 @@
+/* استهداف زر الخروج داخل القائمة المنسدلة عند النقر عليه */
+.dropdown-item.text-danger:active {
+  background-color: #dc3545 !important; /* لون أحمر (Bootstrap Danger) */
+  color: white !important; /* تغيير لون النص للأبيض ليظهر بوضوح */
+}
+
+/* لمنع ظهور أي ظل أزرق خفيف حول الزر عند النقر */
+.dropdown-item:focus {
+  box-shadow: none !important;
+  outline: none !important;
+  background-color: transparent; /* يحافظ على نظافة الزر قبل النقر */
+}
+
+
+/* تثبيت السايدبار ومنعه من الانكماش */
+.sidebar-container {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 260px; /* العرض الذي حددته أنت */
+  flex-shrink: 0; /* يمنع السايدبار من الانكماش إذا كان المحتوى اليمين طويلاً */
+  overflow-y: auto; /* لو السايدبار نفسه فيه عناصر كتير يعمل سكرول جواه */
+}
+
+/* المنطقة اليمين (المحتوى) */
+.content-area {
+  height: 100vh;
+  overflow-y: auto; /* هذا ما يجعل جهة اليمين فقط هي التي تتحرك */
+  background-color: #f8f9fa;
+}
+
+/* تثبيت الـ Topbar في الأعلى داخل منطقة المحتوى */
+.topbar-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
+}
