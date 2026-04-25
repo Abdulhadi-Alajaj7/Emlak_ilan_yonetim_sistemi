@@ -60,6 +60,16 @@ const Iletisim = () => {
               <>
                 <div className="d-flex mb-4">
                   <div className="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary-custom flex-shrink-0" style={{ width: "50px", height: "50px" }}>
+                    <i className="bi bi-building-fill fs-5"></i>
+                  </div>
+                  <div className="ms-3">
+                    <h6 className="fw-bold mb-1">Şirket Adı</h6>
+                    <p className="text-muted small mb-0">{ayarlar?.siteAdi || "Emlak Sistemi"}</p>
+                  </div>
+                </div>
+
+                <div className="d-flex mb-4">
+                  <div className="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary-custom flex-shrink-0" style={{ width: "50px", height: "50px" }}>
                     <i className="bi bi-geo-alt-fill fs-5"></i>
                   </div>
                   <div className="ms-3">
@@ -74,7 +84,13 @@ const Iletisim = () => {
                   </div>
                   <div className="ms-3">
                     <h6 className="fw-bold mb-1">Telefon</h6>
-                    <p className="text-muted small mb-0">{ayarlar?.telefonlar?.[0] || "+90 500 000 00 00"}</p>
+                    {ayarlar?.telefonlar?.length > 0 ? (
+                      ayarlar.telefonlar.map((tel, idx) => (
+                        <p key={idx} className="text-muted small mb-0">{tel}</p>
+                      ))
+                    ) : (
+                      <p className="text-muted small mb-0">+90 500 000 00 00</p>
+                    )}
                   </div>
                 </div>
 
@@ -84,12 +100,46 @@ const Iletisim = () => {
                   </div>
                   <div className="ms-3">
                     <h6 className="fw-bold mb-1">E-Posta</h6>
-                    <p className="text-muted small mb-0">{ayarlar?.epostalar?.[0] || "info@emlak.com"}</p>
+                    {ayarlar?.epostalar?.length > 0 ? (
+                      ayarlar.epostalar.map((email, idx) => (
+                        <p key={idx} className="text-muted small mb-0">{email}</p>
+                      ))
+                    ) : (
+                      <p className="text-muted small mb-0">info@emlak.com</p>
+                    )}
                   </div>
                 </div>
 
+                {ayarlar?.calismaSaatleri && (
+                  <div className="d-flex mb-4">
+                    <div className="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary-custom flex-shrink-0" style={{ width: "50px", height: "50px" }}>
+                      <i className="bi bi-clock-fill fs-5"></i>
+                    </div>
+                    <div className="ms-3">
+                      <h6 className="fw-bold mb-1">Çalışma Saatleri</h6>
+                      <p className="text-muted small mb-0">{ayarlar.calismaSaatleri}</p>
+                    </div>
+                  </div>
+                )}
+
+                {ayarlar?.haritaKonum && (
+                  <div className="d-flex mb-4">
+                    <div className="bg-light rounded-circle d-flex align-items-center justify-content-center text-primary-custom flex-shrink-0" style={{ width: "50px", height: "50px" }}>
+                      <i className="bi bi-map-fill fs-5"></i>
+                    </div>
+                    <div className="ms-3 d-flex align-items-center">
+                      <a href={ayarlar.haritaKonum} target="_blank" rel="noreferrer" className="btn btn-sm btn-outline-primary shadow-sm fw-semibold">
+                        <i className="bi bi-box-arrow-up-right me-1"></i> Haritada Gör
+                      </a>
+                    </div>
+                  </div>
+                )}
+
                 {/* Sosyal Medya (Eğer backend destekliyorsa) */}
-                <div className="mt-5 d-flex gap-2">
+                <div className="mt-5 d-flex gap-2 flex-wrap">
+                  {ayarlar?.whatsapp && (
+                    <a href={`https://wa.me/${ayarlar.whatsapp.replace(/\s+/g, '')}`} target="_blank" rel="noreferrer" className="btn btn-success rounded-circle d-flex align-items-center justify-content-center text-white" style={{ width: "40px", height: "40px" }} title="WhatsApp"><i className="bi bi-whatsapp"></i></a>
+                  )}
                   {ayarlar?.sosyalMedya?.instagram && (
                     <a href={ayarlar.sosyalMedya.instagram} target="_blank" rel="noreferrer" className="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center" style={{ width: "40px", height: "40px" }}><i className="bi bi-instagram"></i></a>
                   )}

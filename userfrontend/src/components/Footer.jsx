@@ -20,10 +20,10 @@ const Footer = () => {
           <div className="col-lg-4 mb-3">
             <h5 className="fw-bold text-white mb-3">Hızlı Bağlantılar</h5>
             <ul className="list-unstyled">
-              <li className="mb-2"><Link to="/ilanlar" className="text-decoration-none" style={{ color: "var(--footer-text)" }}>İlanlar</Link></li>
-              <li className="mb-2"><Link to="/hakkimizda" className="text-decoration-none" style={{ color: "var(--footer-text)" }}>Hakkımızda</Link></li>
-              <li className="mb-2"><Link to="/ekibimiz" className="text-decoration-none" style={{ color: "var(--footer-text)" }}>Ekibimiz</Link></li>
-              <li className="mb-2"><Link to="/iletisim" className="text-decoration-none" style={{ color: "var(--footer-text)" }}>İletişim</Link></li>
+              <li className="mb-2"><Link to="/ilanlar" className="footer-link">İlanlar</Link></li>
+              <li className="mb-2"><Link to="/hakkimizda" className="footer-link">Hakkımızda</Link></li>
+              <li className="mb-2"><Link to="/ekibimiz" className="footer-link">Ekibimiz</Link></li>
+              <li className="mb-2"><Link to="/iletisim" className="footer-link">İletişim</Link></li>
             </ul>
           </div>
           

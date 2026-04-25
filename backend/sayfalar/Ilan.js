@@ -58,7 +58,7 @@ router.post("/", verifyJWT, upload.array("resimler", 10), async (req, res) => {
 
 // جلب إعلان واحد بواسطة الـ ID
 // المسار: GET http://localhost:5000/api/ilan/:id
-router.get("/:id", verifyJWT, async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const ilan = await Ilan.findById(id);

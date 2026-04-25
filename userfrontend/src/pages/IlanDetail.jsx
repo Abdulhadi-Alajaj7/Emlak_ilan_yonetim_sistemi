@@ -10,6 +10,24 @@ const IlanDetail = () => {
   const [error, setError] = useState(null);
   const [activeImage, setActiveImage] = useState(0);
 
+  const getImageUrl = (path) => {
+    if (!path) return "/placeholder.svg";
+    const normalized = path.replace(/\\/g, '/');
+    return `http://localhost:5000${normalized.startsWith('/') ? '' : '/'}${normalized}`;
+  };
+
+  const handlePrevImage = () => {
+    if (ilan?.resimler) {
+      setActiveImage((prev) => (prev === 0 ? ilan.resimler.length - 1 : prev - 1));
+    }
+  };
+
+  const handleNextImage = () => {
+    if (ilan?.resimler) {
+      setActiveImage((prev) => (prev === ilan.resimler.length - 1 ? 0 : prev + 1));
+    }
+  };
+
   const fetchDetail = async () => {
     setStatus("loading");
     try {
@@ -60,19 +78,44 @@ const IlanDetail = () => {
       <div className="row g-5">
         {/* Sol Taraf: Görseller */}
         <div className="col-lg-7">
-          <div className="theme-card border-0 rounded overflow-hidden shadow-sm mb-3">
+          <div className="theme-card border-0 rounded overflow-hidden shadow-sm mb-3 position-relative">
             {ilan.resimler && ilan.resimler.length > 0 ? (
-              <img 
-                src={`http://localhost:5000${ilan.resimler[activeImage]}`} 
-                alt={ilan.baslik}
-                className="w-100 object-fit-cover"
-                style={{ height: "500px" }}
-              />
+              <>
+                <img 
+                  src={getImageUrl(ilan.resimler[activeImage])} 
+                  alt={ilan.baslik}
+                  className="w-100 object-fit-cover"
+                  style={{ height: "500px" }}
+                  onError={(e) => { e.target.onerror = null; e.target.src = "/placeholder.svg"; }}
+                />
+                {ilan.resimler.length > 1 && (
+                  <>
+                    <button 
+                      onClick={handlePrevImage}
+                      className="btn btn-light position-absolute top-50 start-0 translate-middle-y ms-3 rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+                      style={{ width: "45px", height: "45px", zIndex: 10, opacity: 0.9 }}
+                    >
+                      <i className="bi bi-chevron-left text-dark"></i>
+                    </button>
+                    <button 
+                      onClick={handleNextImage}
+                      className="btn btn-light position-absolute top-50 end-0 translate-middle-y me-3 rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+                      style={{ width: "45px", height: "45px", zIndex: 10, opacity: 0.9 }}
+                    >
+                      <i className="bi bi-chevron-right text-dark"></i>
+                    </button>
+                  </>
+                )}
+              </>
             ) : (
-              <div className="d-flex align-items-center justify-content-center bg-light text-muted" style={{ height: "500px" }}>
-                <i className="bi bi-image fs-1"></i>
+              <div className="d-flex flex-column align-items-center justify-content-center bg-light text-muted" style={{ height: "500px" }}>
+                <i className="bi bi-image" style={{ fontSize: "4rem" }}></i>
+                <span className="mt-2 fw-semibold">Görsel Yok</span>
               </div>
             )}
+            <div className="position-absolute top-0 start-0 m-3">
+              <span className="badge bg-primary-custom px-3 py-2 fs-6 shadow-sm">{ilan.ilanTuru}</span>
+            </div>
           </div>
           
           {/* Thumbnails */}
@@ -81,11 +124,16 @@ const IlanDetail = () => {
               {ilan.resimler.map((resim, idx) => (
                 <div 
                   key={idx} 
-                  className={`rounded overflow-hidden cursor-pointer flex-shrink-0 ${activeImage === idx ? 'border border-2 border-primary' : 'opacity-75'}`}
-                  style={{ width: "100px", height: "75px", cursor: "pointer" }}
+                  className={`rounded overflow-hidden flex-shrink-0 ${activeImage === idx ? 'border border-3 border-primary shadow-sm' : 'opacity-75'}`}
+                  style={{ width: "100px", height: "75px", cursor: "pointer", transition: "all 0.2s" }}
                   onClick={() => setActiveImage(idx)}
                 >
-                  <img src={`http://localhost:5000${resim}`} alt="" className="w-100 h-100 object-fit-cover" />
+                  <img 
+                    src={getImageUrl(resim)} 
+                    alt="" 
+                    className="w-100 h-100 object-fit-cover"
+                    onError={(e) => { e.target.onerror = null; e.target.src = "/placeholder.svg"; }}
+                  />
                 </div>
               ))}
             </div>
@@ -142,10 +190,10 @@ const IlanDetail = () => {
             <p className="text-muted lh-lg" style={{ whiteSpace: "pre-wrap" }}>{ilan.aciklama}</p>
           </div>
 
-          <div className="d-grid gap-2">
-            <a href="tel:0000000000" className="btn btn-primary bg-primary-custom border-0 py-3 fw-bold rounded shadow-sm">
-               <i className="bi bi-telephone-fill me-2"></i> İletişime Geç
-            </a>
+          <div>
+            <Link to="/iletisim" className="btn btn-primary bg-primary-custom border-0 py-3 px-4 fw-bold rounded shadow-sm w-100 fs-5 d-flex align-items-center justify-content-center">
+               <i className="bi bi-envelope-paper-fill me-2"></i> İletişime Geç
+            </Link>
           </div>
         </div>
       </div>

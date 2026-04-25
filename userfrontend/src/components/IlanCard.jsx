@@ -1,35 +1,21 @@
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { toggleFavorite } from "../redux/favoritesSlice";
 
 const IlanCard = ({ ilan }) => {
-  const dispatch = useDispatch();
-  const { items: favorites } = useSelector((state) => state.favorites);
-
-  const isFavorite = favorites.some((fav) => fav._id === ilan._id);
-
-  const handleFavoriteClick = (e) => {
-    e.preventDefault(); // Link'in çalışmasını engellemek için
-    dispatch(toggleFavorite(ilan));
+  const getImageUrl = (path) => {
+    if (!path) return "/placeholder.svg";
+    const normalized = path.replace(/\\/g, '/');
+    return `http://localhost:5000${normalized.startsWith('/') ? '' : '/'}${normalized}`;
   };
 
   // Resim kontrolü (backend'den gelen resimler array ise ilkini al)
   const imageSrc =
     ilan.resimler && ilan.resimler.length > 0
-      ? `http://localhost:5000${ilan.resimler[0]}`
+      ? getImageUrl(ilan.resimler[0])
       : "/placeholder.svg";
 
   return (
     <div className="card h-100 theme-card position-relative border-0 shadow-sm" aria-hidden="true">
-      {/* Favori Butonu */}
-      <button
-        onClick={handleFavoriteClick}
-        className="position-absolute top-0 end-0 m-2 btn btn-light rounded-circle shadow-sm z-1 d-flex align-items-center justify-content-center p-2 border-0"
-      >
-        <i
-          className={`bi ${isFavorite ? "bi-heart-fill text-danger" : "bi-heart"} fs-5`}
-        ></i>
-      </button>
+
 
       <Link to={`/ilan/${ilan._id}`} className="text-decoration-none">
         <div className="ratio ratio-4x3 bg-light border-bottom border-light-subtle rounded-top overflow-hidden">

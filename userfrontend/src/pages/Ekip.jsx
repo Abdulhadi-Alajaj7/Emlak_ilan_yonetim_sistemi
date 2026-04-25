@@ -24,31 +24,16 @@ const TeamCard = ({ member }) => {
         {/* Arka Yüz (Detay ve İletişim) */}
         <div className="flip-card-back">
           <h5 className="fw-bold mb-2">{member.adSoyad}</h5>
-          <p className="text-primary-custom fw-semibold mb-3">{member.gorev}</p>
+          <p className="text-primary-custom fw-semibold mb-4">{member.gorev}</p>
           
-          <p className="small px-2 mb-4" style={{ opacity: 0.85 }}>
-            Müşteri memnuniyetini ön planda tutarak profesyonel gayrimenkul danışmanlığı hizmeti vermektedir.
-          </p>
-
-          <div className="d-flex justify-content-center gap-3 w-100">
-            <a href={`tel:${member.telefon || "+905000000000"}`} className="btn btn-light rounded-circle shadow-sm" style={{ width: "45px", height: "45px", display: "flex", alignItems: "center", justifyContent: "center" }} title="Telefon">
-              <i className="bi bi-telephone-fill text-primary-custom"></i>
-            </a>
-            
+          <div className="d-flex flex-column align-items-center w-100 px-3">
             {member.email && (
-              <a href={`mailto:${member.email}`} className="btn btn-light rounded-circle shadow-sm" style={{ width: "45px", height: "45px", display: "flex", alignItems: "center", justifyContent: "center" }} title="Email">
-                <i className="bi bi-envelope-fill text-primary-custom"></i>
-              </a>
-            )}
-            
-            <a href={`https://wa.me/${(member.telefon || "905000000000").replace(/\s+/g, '')}`} target="_blank" rel="noreferrer" className="btn btn-light rounded-circle shadow-sm" style={{ width: "45px", height: "45px", display: "flex", alignItems: "center", justifyContent: "center" }} title="WhatsApp">
-              <i className="bi bi-whatsapp text-success"></i>
-            </a>
-
-            {member.sosyalMedya?.linkedin && (
-              <a href={member.sosyalMedya.linkedin} target="_blank" rel="noreferrer" className="btn btn-light rounded-circle shadow-sm" style={{ width: "45px", height: "45px", display: "flex", alignItems: "center", justifyContent: "center" }} title="LinkedIn">
-                <i className="bi bi-linkedin text-primary"></i>
-              </a>
+              <div className="d-flex align-items-center w-100 p-3 rounded border border-primary-subtle" style={{ backgroundColor: "var(--card-bg)" }}>
+                <i className="bi bi-envelope-fill text-primary-custom fs-4 me-3"></i>
+                <span className="fw-bold text-truncate text-start flex-grow-1 text-primary-custom" style={{ fontSize: "0.95rem" }}>
+                  {member.email}
+                </span>
+              </div>
             )}
           </div>
         </div>

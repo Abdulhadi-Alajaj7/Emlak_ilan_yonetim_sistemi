@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { toggleTheme } from "../redux/themeSlice";
@@ -67,7 +67,7 @@ const Navbar = () => {
         <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
           <ul className="navbar-nav fw-semibold fs-6">
             <li className="nav-item">
-               <Link className="nav-link px-3" to="/">Ana Sayfa</Link>
+               <NavLink className={({isActive}) => `nav-link px-3 ${isActive ? 'active' : ''}`} to="/">Ana Sayfa</NavLink>
             </li>
             <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle px-3" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -93,13 +93,13 @@ const Navbar = () => {
               </ul>
             </li>
             <li className="nav-item">
-              <Link className="nav-link px-3" to="/hakkimizda">Hakkımızda</Link>
+              <NavLink className={({isActive}) => `nav-link px-3 ${isActive ? 'active' : ''}`} to="/hakkimizda">Hakkımızda</NavLink>
             </li>
             <li className="nav-item">
-              <Link className="nav-link px-3" to="/ekibimiz">Ekibimiz</Link>
+              <NavLink className={({isActive}) => `nav-link px-3 ${isActive ? 'active' : ''}`} to="/ekibimiz">Ekibimiz</NavLink>
             </li>
             <li className="nav-item">
-              <Link className="nav-link px-3" to="/iletisim">İletişim</Link>
+              <NavLink className={({isActive}) => `nav-link px-3 ${isActive ? 'active' : ''}`} to="/iletisim">İletişim</NavLink>
             </li>
           </ul>
         </div>
