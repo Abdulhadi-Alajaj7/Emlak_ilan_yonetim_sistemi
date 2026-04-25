@@ -13,7 +13,7 @@ const port = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "http://localhost:3001"],
     credentials: true, // Cookie ve token (JWT) gönderimine izin ver
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"], // Gönderilebilecek header'lar (içerik tipi ve token)

@@ -51,7 +51,7 @@ router.post("/", verifyJWT, upload.single("resim"), async (req, res) => {   // f
 
 //tum bersyoneler
 //localhost:5000/api/ekip/
-router.get("/", verifyJWT, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const persyoneller = await Ekip.find();
     res.status(200).json(persyoneller);
@@ -62,7 +62,7 @@ router.get("/", verifyJWT, async (req, res) => {
 
 //tek persyonle getir
 //localhost:5000/api/ekip/:id
-router.get("/:id", verifyJWT, async (req, res) => {
+router.get("/:id", async (req, res) => {
   const id = req.params.id;
   try {
     const persyonel = await Ekip.findById(id);
