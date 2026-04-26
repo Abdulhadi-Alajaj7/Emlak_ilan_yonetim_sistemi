@@ -74,6 +74,32 @@ function Login() {
               </div>
             </div>
           </div>
+          <style>
+            {`
+              .forgot-password-link {
+                color: white;
+                text-decoration: none;
+                font-size: 0.95rem;
+                cursor: pointer;
+                opacity: 0.8;
+                transition: all 0.3s ease;
+              }
+              .forgot-password-link:hover {
+                opacity: 1;
+                color: #ff4d4d !important;
+                text-shadow: 0 0 10px rgba(255, 77, 77, 0.6);
+                text-decoration: underline;
+              }
+            `}
+          </style>
+          <div className="text-end mt-2 px-3">
+            <span 
+              onClick={() => navigate("/forgot-password")} 
+              className="forgot-password-link"
+            >
+              Şifremi unuttum?
+            </span>
+          </div>
           <div className="text-center">
             <button
               className="btn btn-danger mt-3 rounded-pill"

@@ -110,7 +110,8 @@ function AdminProfile() {
               value={formData.sifre}
               onChange={handleChange}
               className="form-control"
-              placeholder="******"
+              autoComplete="new-password"
+              placeholder={"•".repeat(admin?.sifreUzunlugu || 8)}
             />
           </div>
 

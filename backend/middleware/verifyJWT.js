@@ -10,9 +10,17 @@ const verifyJWT = (req, res, next) => {
 
   const token = authHeader.split(" ")[1];
 
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, decoded) => {
     if (err) return res.status(403).json({ message: "yasak" });
+    
     req.user = decoded.UserInfo.id; 
+    try {
+      const Admin = require("../models/AdminSchema");
+      req.adminData = await Admin.findById(req.user);
+    } catch (e) {
+      console.error(e);
+    }
+    
     next(); 
   });
 };

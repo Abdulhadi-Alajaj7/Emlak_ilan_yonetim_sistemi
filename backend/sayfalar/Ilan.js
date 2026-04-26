@@ -3,6 +3,7 @@ const router = express.Router();
 const Ilan = require("../models/IlanSchema");
 const multer = require("multer");
 const verifyJWT = require("../middleware/verifyJWT");
+const logAction = require("../utils/logger");
 const fs = require("fs");
 const path = require("path");
 
@@ -53,6 +54,9 @@ router.post("/", verifyJWT, upload.array("resimler", 10), async (req, res) => {
     odaSayisi,
     resimler,
   });
+
+  await logAction(req.adminData._id, req.adminData.Admin_Adi, "İlan Eklendi", `Eklenen İlan: ${baslik}`, req.ip);
+
   res.status(200).json(yeniIlan);
 });
 
@@ -124,6 +128,9 @@ router.put(
       if (resimler) updateData.resimler = resimler;
 
       const ilan = await Ilan.findByIdAndUpdate(id, updateData, { new: true });
+
+      await logAction(req.adminData._id, req.adminData.Admin_Adi, "İlan Güncellendi", `Güncellenen İlan: ${baslik}`, req.ip);
+
       res.status(200).json(ilan);
     } catch (error) {
       res.status(500).json({ error: "Sunucu İç Hatası" });
@@ -149,6 +156,9 @@ router.delete("/:id", verifyJWT, async (req, res) => {
       });
     }
     await Ilan.findByIdAndDelete(id);
+
+    await logAction(req.adminData._id, req.adminData.Admin_Adi, "İlan Silindi", `Silinen İlan: ${ilan.baslik}`, req.ip);
+
     res.status(200).json({ message: "ilan silindi" });
   } catch (error) {
     res.status(500).json({ error: "Sunucu İç Hatası" });

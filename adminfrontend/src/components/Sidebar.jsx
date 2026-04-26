@@ -206,6 +206,37 @@ function Sidebar({ admin, sidebarOpen }) {
             Ayarlar
           </NavLink>
         </li>
+
+        {admin?.rol === "super_admin" && (
+          <>
+            <li className="nav-item mt-3 border-top border-secondary pt-3">
+              <NavLink
+                to="/dashboard/admin-yonetimi"
+                className={({ isActive }) =>
+                  `nav-link d-flex align-items-center rounded px-3 py-2 ${
+                    isActive ? "text-danger fw-bold" : "text-white"
+                  }`
+                }
+              >
+                <i className="bi bi-shield-lock me-3 fs-5"></i>
+                Admin Yönetimi
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink
+                to="/dashboard/islem-kayitlari"
+                className={({ isActive }) =>
+                  `nav-link d-flex align-items-center rounded px-3 py-2 ${
+                    isActive ? "text-danger fw-bold" : "text-white"
+                  }`
+                }
+              >
+                <i className="bi bi-journal-text me-3 fs-5"></i>
+                İşlem Kayıtları
+              </NavLink>
+            </li>
+          </>
+        )}
       </ul>
     </div>
   );

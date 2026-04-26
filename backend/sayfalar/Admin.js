@@ -5,6 +5,8 @@ const multer = require("multer");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const verifyJWT = require("../middleware/verifyJWT");
+const verifySuperAdmin = require("../middleware/verifySuperAdmin");
+const logAction = require("../utils/logger");
 
 const fs = require("fs");
 const path = require("path");
@@ -36,7 +38,7 @@ const upload = multer({
 
 //kulanci ekle
 //http://localhost:5000/api/admin/register
-router.post("/register", upload.single("resim"), async (req, res) => {
+router.post("/register", verifyJWT, verifySuperAdmin, upload.single("resim"), async (req, res) => {
   const { Admin_Adi, sifre, email } = req.body;
   console.log(req.body);
 console.log(req.file);
@@ -55,36 +57,15 @@ console.log(req.file);
   const yeniAdmin = await Admin.create({
     Admin_Adi,
     sifre: hashedPassword,
+    sifreUzunlugu: sifre.length,
     email,
     fotograf: resim,
   });
-  const accessToken = jwt.sign(
-    {
-      UserInfo: {
-        id: yeniAdmin._id,
-      },
-    },
-    process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "15m" },
-  );
-  const refreshToken = jwt.sign(
-    {
-      UserInfo: {
-        id: yeniAdmin._id,
-      },
-    },
-    process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: "7d" },
-  );
-  res.cookie("jwt", refreshToken, {
-    httpOnly: true, //accessible only by web server
-    secure: false, //https
-    sameSite: "Lax", //cross-site cookie
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-  });
+
+  await logAction(req.adminData._id, req.adminData.Admin_Adi, "Admin Eklendi", `Eklenen Admin: ${Admin_Adi}`, req.ip);
 
   res.status(200).json({
-    accessToken,
+    message: "Admin başarıyla eklendi",
     email: yeniAdmin.email,
     Admin_Adi: yeniAdmin.Admin_Adi,
   });
@@ -135,6 +116,8 @@ router.post("/login", async (req, res) => {
     ad_soyad: admin.Admin_Adi,
     email: admin.email,
     fotograf: admin.fotograf,
+    rol: admin.rol,
+    sifreUzunlugu: admin.sifreUzunlugu,
   });
 });
 
@@ -166,6 +149,8 @@ router.get("/refresh", async (req, res) => {
         ad_soyad: admin.Admin_Adi,
         email: admin.email,
         fotograf: admin.fotograf,
+        rol: admin.rol,
+        sifreUzunlugu: admin.sifreUzunlugu,
       });
     },
   );
@@ -216,6 +201,7 @@ router.put("/update-me", verifyJWT, upload.single("resim"), async (req, res) => 
     if (sifre) {
       const hashedPassword = await bcrypt.hash(sifre, 10);
       updateData.sifre = hashedPassword;
+      updateData.sifreUzunlugu = sifre.length;
     }
 
     // 4. التحديث النهائي باستخدام الـ ID الموثوق
@@ -224,23 +210,66 @@ router.put("/update-me", verifyJWT, upload.single("resim"), async (req, res) => 
       runValidators: true,
     });
 
+    await logAction(id, updatedAdmin.Admin_Adi, "Kendi Bilgilerini Güncelledi", "", req.ip);
+
     res.status(200).json(updatedAdmin);
   } catch (error) {
     res.status(500).json({ error: "Sunucu İç Hatası" });
   }
 });
+//admin bilgilerini super adminin düzeltmesi
+router.put("/:id", verifyJWT, verifySuperAdmin, upload.single("resim"), async (req, res) => {
+  const id = req.params.id;
+  const { Admin_Adi, sifre, email, rol } = req.body;
+
+  try {
+    const adminToUpdate = await Admin.findById(id);
+    if (!adminToUpdate)
+      return res.status(404).json({ error: "Admin bulunamadı" });
+
+    if (req.file && adminToUpdate.fotograf) {
+      const oldPath = path.join(__dirname, "..", adminToUpdate.fotograf);
+      if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+    }
+
+    const updateData = {};
+    if (Admin_Adi) updateData.Admin_Adi = Admin_Adi;
+    if (email) updateData.email = email;
+    if (rol) updateData.rol = rol;
+
+    if (req.file) updateData.fotograf = `/public/Admin_images/${req.file.filename}`;
+
+    if (sifre) {
+      const hashedPassword = await bcrypt.hash(sifre, 10);
+      updateData.sifre = hashedPassword;
+      updateData.sifreUzunlugu = sifre.length;
+    }
+
+    const updatedAdmin = await Admin.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    await logAction(req.adminData._id, req.adminData.Admin_Adi, "Admin Güncellendi", `Güncellenen Admin: ${updatedAdmin.Admin_Adi}`, req.ip);
+
+    res.status(200).json(updatedAdmin);
+  } catch (error) {
+    res.status(500).json({ error: "Sunucu İç Hatası" });
+  }
+});
+
 //admin silmek
 //localhost:5000/api/kullanci/id
-router.delete("/:id", verifyJWT, async (req, res) => {
+router.delete("/:id", verifyJWT, verifySuperAdmin, async (req, res) => {
   const id = req.params.id;
-  if (req.user.id !== id) {
-    return res.status(403).json({ error: "Yetkisiz işlem" });
+  if (req.adminData._id.toString() === id) {
+    return res.status(403).json({ error: "Kendinizi silemezsiniz" });
   }
 
   try {
     const admin = await Admin.findById(id);
     if (!admin) {
-      return res.status(404).json({ error: "persyonel bulunamadı" });
+      return res.status(404).json({ error: "personel bulunamadı" });
     }
 
     if (admin.fotograf) {
@@ -252,7 +281,9 @@ router.delete("/:id", verifyJWT, async (req, res) => {
 
     await Admin.findByIdAndDelete(id);
 
-    res.status(200).json({ message: "persyonel ve fotograf silindi" });
+    await logAction(req.adminData._id, req.adminData.Admin_Adi, "Admin Silindi", `Silinen Admin: ${admin.Admin_Adi}`, req.ip);
+
+    res.status(200).json({ message: "personel ve fotograf silindi" });
   } catch (error) {
     res.status(500).json({ error: "Sunucu İç Hatası" });
   }
@@ -262,6 +293,24 @@ router.get("/me", verifyJWT, async (req, res) => {
   try {
     const admin = await Admin.findById(req.user.id).select("-sifre");
     res.status(200).json(admin);
+  } catch (error) {
+    res.status(500).json({ error: "Sunucu hatası" });
+  }
+});
+
+router.get("/count", verifyJWT, async (req, res) => {
+  try {
+    const count = await Admin.countDocuments();
+    res.status(200).json({ count });
+  } catch (error) {
+    res.status(500).json({ error: "Sunucu hatası" });
+  }
+});
+
+router.get("/", verifyJWT, verifySuperAdmin, async (req, res) => {
+  try {
+    const admins = await Admin.find().select("-sifre");
+    res.status(200).json(admins);
   } catch (error) {
     res.status(500).json({ error: "Sunucu hatası" });
   }

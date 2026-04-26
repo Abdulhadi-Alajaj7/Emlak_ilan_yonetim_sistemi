@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Ayarlar = require("../models/AyarlarSchema");
 const verifyJWT = require("../middleware/verifyJWT");
+const logAction = require("../utils/logger");
 const multer = require("multer");
 const path = require("path");
 
@@ -47,6 +48,8 @@ router.put("/", verifyJWT, upload.single("siteLogosu"), async (req, res) => {
       new: true,
       upsert: true,
     });
+
+    await logAction(req.adminData._id, req.adminData.Admin_Adi, "Ayar Değiştirdi", "Site ayarları güncellendi", req.ip);
 
     res.status(200).json(settings);
   } catch (error) {

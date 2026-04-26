@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getIlanlar } from "../redux/ilanSlice";
 import { getPersonel } from "../redux/personelSlice";
 import { getMesajlar } from "../redux/mesajSlice";
 import { useNavigate } from "react-router-dom";
+import api from "../api";
 
 function DashboardHome() {
   const dispatch = useDispatch();
@@ -16,10 +17,22 @@ function DashboardHome() {
   // جلب بيانات الآدمن المسجل
   const { admin } = useSelector((state) => state.auth);
 
+  const [adminCount, setAdminCount] = useState(0);
+
   useEffect(() => {
     dispatch(getIlanlar());
     dispatch(getPersonel());
     dispatch(getMesajlar());
+    
+    const fetchAdminCount = async () => {
+      try {
+        const res = await api.get("/admin/count");
+        setAdminCount(res.data.count);
+      } catch (err) {
+        console.error("Admin sayısı alınamadı", err);
+      }
+    };
+    fetchAdminCount();
   }, [dispatch]);
 
   const stats = [
@@ -44,6 +57,13 @@ function DashboardHome() {
       color: "bg-warning",
       link: "/dashboard/mesajlar",
     },
+    {
+      title: "Toplam Admin",
+      count: adminCount,
+      icon: "bi-shield-lock",
+      color: "bg-danger",
+      link: admin?.rol === "super_admin" ? "/dashboard/admin-yonetimi" : "#",
+    },
   ];
 
   return (
@@ -55,7 +75,7 @@ function DashboardHome() {
       
       <div className="row g-4 mb-5">
         {stats.map((item, index) => (
-          <div className="col-md-4" key={index}>
+          <div className="col-md-3 col-sm-6" key={index}>
             <div 
               className={`card border-0 shadow-sm text-white ${item.color}`} 
               style={{ cursor: "pointer", transition: "0.3s", borderRadius: "15px" }}

@@ -19,9 +19,14 @@ const AdminSchema = new mongoose.Schema(
     rol: {
       type: String,
       default: "admin",
-      immutable: true,
+    },
+    sifreUzunlugu: {
+      type: Number,
+      default: 8,
     },
     fotograf: String,
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
   },
   { timestamps: true },
 );

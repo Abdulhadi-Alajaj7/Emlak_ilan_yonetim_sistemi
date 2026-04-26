@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Mesaj = require("../models/MesajSchema");
 const verifyJWT=require("../middleware/verifyJWT");
+const logAction = require("../utils/logger");
 
 //mesaj ekle
 //localhost:5000/api/mesaj/
@@ -60,6 +61,11 @@ router.delete("/:id",verifyJWT, async(req, res) => {
             return res.status(404).json({ error: "mesaj bulunmadi" });
         }
         await Mesaj.findByIdAndDelete(id);
+        
+        if (req.adminData) {
+            await logAction(req.adminData._id, req.adminData.Admin_Adi, "Mesaj Silindi", `Silinen Mesaj ID: ${id}`, req.ip);
+        }
+
         res.status(200).json(silinecekMesaj);
     } catch (error) {
         res.status(500).json({error:"Sunucu İç Hatası"});

@@ -5,6 +5,8 @@ import { refreshToken } from "./redux/authSlice";
 
 // Pages
 import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import DashboardHome from "./pages/DashboardHome";
 import PersonelList from "./pages/PersonelList";
@@ -17,6 +19,10 @@ import MesajList from "./pages/MesajList";
 import MesajDetail from "./pages/MesajDetail";
 import AdminProfile from "./pages/AdminProfile";
 import Ayarlar from "./pages/Ayarlar";
+import AdminYonetimi from "./pages/AdminYonetimi";
+import AdminAdd from "./pages/AdminAdd";
+import AdminEdit from "./pages/AdminEdit";
+import IslemKayitlari from "./pages/IslemKayitlari";
 
 function App() {
   const dispatch = useDispatch();
@@ -54,6 +60,14 @@ function App() {
           path="/"
           element={!token ? <Login /> : <Navigate to="/dashboard" />}
         />
+        <Route
+          path="/forgot-password"
+          element={!token ? <ForgotPassword /> : <Navigate to="/dashboard" />}
+        />
+        <Route
+          path="/reset-password/:token"
+          element={!token ? <ResetPassword /> : <Navigate to="/dashboard" />}
+        />
 
         <Route
           path="/dashboard"
@@ -70,6 +84,10 @@ function App() {
           <Route path="mesajlar/:id" element={<MesajDetail />} />
           <Route path="Profil" element={<AdminProfile />} />
           <Route path="ayarlar" element={<Ayarlar />} />
+          <Route path="admin-yonetimi" element={<AdminYonetimi />} />
+          <Route path="admin-yonetimi/add" element={<AdminAdd />} />
+          <Route path="admin-yonetimi/edit/:id" element={<AdminEdit />} />
+          <Route path="islem-kayitlari" element={<IslemKayitlari />} />
         </Route>
       </Routes>
     </BrowserRouter>
