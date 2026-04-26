@@ -6,6 +6,8 @@ import { fetchAyarlar } from "./redux/ayarlarSlice";
 // Bileşenler
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import WelcomeAnimation from "./components/WelcomeAnimation";
+import CursorTrail from "./components/CursorTrail";
 
 // Sayfalar
 import Home from "./pages/Home";
@@ -33,6 +35,8 @@ function App() {
 
   return (
     <div className="app-container">
+      <WelcomeAnimation />
+      <CursorTrail />
       <BrowserRouter>
         <Navbar />
         <Routes>

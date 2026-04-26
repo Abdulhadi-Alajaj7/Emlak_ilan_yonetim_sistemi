@@ -1,3 +1,13 @@
+/* --- Premium Font Definitions --- */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+}
+
+h1, h2, h3, h4, h5, h6, .navbar-brand, .card-title, .fw-bold {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+/* -------------------------------- */
+
 .wave-group {
   position: relative;
   margin-bottom: 25px;
