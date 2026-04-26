@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { girisYap } from "../redux/authSlice";
 import { useNavigate } from "react-router-dom";
-import loginBg from "../images/loginBg.jpg";
+import loginBg from "../images/loginBg.png";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -41,34 +41,36 @@ function Login() {
             <h2 className="text-center text-white">Giriş yap</h2>
           </div>
 
-          <div className="row">
+          <div className="row mt-4">
             <div className="col">
-              <div className="form-group">
-                <label htmlFor="mail" className="text-white">mail</label>
-                <input
-                  className="form-control rounded-pill "
-                  type="email"
-                  placeholder="email"
-                  id="mail"
-                  required
-                  onChange={(e) => setEmail(e.target.value)}
-                />
+              <div className="wave-group">
+                <input required type="email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <span className="bar"></span>
+                <label className="label">
+                  <span className="label-char" style={{ '--index': 0 }}>E</span>
+                  <span className="label-char" style={{ '--index': 1 }}>-</span>
+                  <span className="label-char" style={{ '--index': 2 }}>p</span>
+                  <span className="label-char" style={{ '--index': 3 }}>o</span>
+                  <span className="label-char" style={{ '--index': 4 }}>s</span>
+                  <span className="label-char" style={{ '--index': 5 }}>t</span>
+                  <span className="label-char" style={{ '--index': 6 }}>a</span>
+                </label>
               </div>
             </div>
           </div>
 
-          <div className="row">
+          <div className="row mt-3">
             <div className="col">
-              <div className="form-group">
-                <label htmlFor="sifre" className="text-white">şifre</label>
-                <input
-                  className="form-control rounded-pill"
-                  type="password"
-                  placeholder="şifre"
-                  id="sifre"
-                  required
-                  onChange={(e) => setSifre(e.target.value)}
-                />
+              <div className="wave-group">
+                <input required type="password" className="input" value={sifre} onChange={(e) => setSifre(e.target.value)} />
+                <span className="bar"></span>
+                <label className="label">
+                  <span className="label-char" style={{ '--index': 0 }}>Ş</span>
+                  <span className="label-char" style={{ '--index': 1 }}>i</span>
+                  <span className="label-char" style={{ '--index': 2 }}>f</span>
+                  <span className="label-char" style={{ '--index': 3 }}>r</span>
+                  <span className="label-char" style={{ '--index': 4 }}>e</span>
+                </label>
               </div>
             </div>
           </div>

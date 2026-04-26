@@ -28,7 +28,7 @@ const Iletisim = () => {
   };
 
   return (
-    <div className="container py-5 min-vh-100">
+    <div className="container py-5 min-vh-100 page-enter">
       
       <div className="text-center mb-5 pb-3">
         <h6 className="text-primary-custom fw-bold text-uppercase mb-2">İletişim</h6>
@@ -136,25 +136,46 @@ const Iletisim = () => {
                 )}
 
                 {/* Sosyal Medya (Eğer backend destekliyorsa) */}
-                <div className="mt-5 d-flex gap-2 flex-wrap">
-                  {ayarlar?.whatsapp && (
-                    <a href={`https://wa.me/${ayarlar.whatsapp.replace(/\s+/g, '')}`} target="_blank" rel="noreferrer" className="btn btn-success rounded-circle d-flex align-items-center justify-content-center text-white" style={{ width: "40px", height: "40px" }} title="WhatsApp"><i className="bi bi-whatsapp"></i></a>
-                  )}
-                  {ayarlar?.sosyalMedya?.instagram && (
-                    <a href={ayarlar.sosyalMedya.instagram} target="_blank" rel="noreferrer" className="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center" style={{ width: "40px", height: "40px" }}><i className="bi bi-instagram"></i></a>
-                  )}
-                  {ayarlar?.sosyalMedya?.facebook && (
-                    <a href={ayarlar.sosyalMedya.facebook} target="_blank" rel="noreferrer" className="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center" style={{ width: "40px", height: "40px" }}><i className="bi bi-facebook"></i></a>
-                  )}
-                  {ayarlar?.sosyalMedya?.twitter && (
-                    <a href={ayarlar.sosyalMedya.twitter} target="_blank" rel="noreferrer" className="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center" style={{ width: "40px", height: "40px" }}><i className="bi bi-twitter-x"></i></a>
-                  )}
-                  {ayarlar?.sosyalMedya?.linkedin && (
-                    <a href={ayarlar.sosyalMedya.linkedin} target="_blank" rel="noreferrer" className="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center" style={{ width: "40px", height: "40px" }}><i className="bi bi-linkedin"></i></a>
-                  )}
-                  {ayarlar?.sosyalMedya?.youtube && (
-                    <a href={ayarlar.sosyalMedya.youtube} target="_blank" rel="noreferrer" className="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center" style={{ width: "40px", height: "40px" }}><i className="bi bi-youtube"></i></a>
-                  )}
+                <div className="mt-5 pt-3 border-top border-secondary-subtle">
+                  <h6 className="fw-bold mb-4">Sosyal Medya Hesaplarımız</h6>
+                  <div className="wrapper d-flex gap-3 flex-wrap justify-content-start">
+                    {ayarlar?.whatsapp && (
+                      <a href={`https://wa.me/${ayarlar.whatsapp.replace(/\s+/g, '')}`} target="_blank" rel="noreferrer" className="icon whatsapp text-decoration-none">
+                        <span className="tooltip">WhatsApp</span>
+                        <i className="bi bi-whatsapp"></i>
+                      </a>
+                    )}
+                    {ayarlar?.sosyalMedya?.instagram && (
+                      <a href={ayarlar.sosyalMedya.instagram} target="_blank" rel="noreferrer" className="icon instagram text-decoration-none">
+                        <span className="tooltip">Instagram</span>
+                        <i className="bi bi-instagram"></i>
+                      </a>
+                    )}
+                    {ayarlar?.sosyalMedya?.facebook && (
+                      <a href={ayarlar.sosyalMedya.facebook} target="_blank" rel="noreferrer" className="icon facebook text-decoration-none">
+                        <span className="tooltip">Facebook</span>
+                        <i className="bi bi-facebook"></i>
+                      </a>
+                    )}
+                    {ayarlar?.sosyalMedya?.twitter && (
+                      <a href={ayarlar.sosyalMedya.twitter} target="_blank" rel="noreferrer" className="icon twitter text-decoration-none">
+                        <span className="tooltip">Twitter</span>
+                        <i className="bi bi-twitter-x"></i>
+                      </a>
+                    )}
+                    {ayarlar?.sosyalMedya?.linkedin && (
+                      <a href={ayarlar.sosyalMedya.linkedin} target="_blank" rel="noreferrer" className="icon linkedin text-decoration-none">
+                        <span className="tooltip">LinkedIn</span>
+                        <i className="bi bi-linkedin"></i>
+                      </a>
+                    )}
+                    {ayarlar?.sosyalMedya?.youtube && (
+                      <a href={ayarlar.sosyalMedya.youtube} target="_blank" rel="noreferrer" className="icon youtube text-decoration-none">
+                        <span className="tooltip">YouTube</span>
+                        <i className="bi bi-youtube"></i>
+                      </a>
+                    )}
+                  </div>
                 </div>
               </>
             )}

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import api from "../api";
 import ErrorState from "../components/ErrorState";
+import { IlanDetailSkeleton } from "../components/SkeletonLoaders";
 
 const IlanDetail = () => {
   const { id } = useParams();
@@ -46,16 +47,12 @@ const IlanDetail = () => {
   }, [id]);
 
   if (status === "loading") {
-    return (
-      <div className="container py-5 min-vh-100 d-flex justify-content-center align-items-center">
-        <div className="spinner-border text-primary-custom" role="status" style={{ width: "3rem", height: "3rem" }}></div>
-      </div>
-    );
+    return <IlanDetailSkeleton />;
   }
 
   if (status === "failed") {
     return (
-      <div className="container py-5 min-vh-100">
+      <div className="container py-5 min-vh-100 page-enter">
         <ErrorState message={error} onRetry={fetchDetail} />
       </div>
     );
@@ -64,7 +61,7 @@ const IlanDetail = () => {
   if (!ilan) return null;
 
   return (
-    <div className="container py-5 min-vh-100">
+    <div className="container py-5 min-vh-100 page-enter">
       
       {/* Breadcrumb */}
       <nav aria-label="breadcrumb" className="mb-4">
@@ -86,6 +83,7 @@ const IlanDetail = () => {
                   alt={ilan.baslik}
                   className="w-100 object-fit-cover"
                   style={{ height: "500px" }}
+                  loading="lazy"
                   onError={(e) => { e.target.onerror = null; e.target.src = "/placeholder.svg"; }}
                 />
                 {ilan.resimler.length > 1 && (
@@ -132,6 +130,7 @@ const IlanDetail = () => {
                     src={getImageUrl(resim)} 
                     alt="" 
                     className="w-100 h-100 object-fit-cover"
+                    loading="lazy"
                     onError={(e) => { e.target.onerror = null; e.target.src = "/placeholder.svg"; }}
                   />
                 </div>

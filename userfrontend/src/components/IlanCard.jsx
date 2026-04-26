@@ -18,11 +18,12 @@ const IlanCard = ({ ilan }) => {
 
 
       <Link to={`/ilan/${ilan._id}`} className="text-decoration-none">
-        <div className="ratio ratio-4x3 bg-light border-bottom border-light-subtle rounded-top overflow-hidden">
+        <div className="ratio ratio-4x3 bg-light border-bottom border-light-subtle rounded-top overflow-hidden ilan-img-wrapper">
           <img
             src={imageSrc}
             className="card-img-top object-fit-cover w-100 h-100"
             alt={ilan.baslik}
+            loading="lazy"
             onError={(e) => { e.target.onerror = null; e.target.src = "/placeholder.svg"; }}
           />
         </div>

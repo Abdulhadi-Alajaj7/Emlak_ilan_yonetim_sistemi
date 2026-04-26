@@ -25,7 +25,7 @@ const Home = () => {
     .slice(0, 10);
 
   return (
-    <div className="w-100 min-vh-100">
+    <div className="page-enter">
       <HeroSection />
       
       {/* Son Eklenen İlanlar */}

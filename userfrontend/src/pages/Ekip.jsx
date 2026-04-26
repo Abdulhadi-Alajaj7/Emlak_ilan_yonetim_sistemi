@@ -66,7 +66,7 @@ const Ekip = () => {
   }, []);
 
   return (
-    <div className="container-fluid py-5 min-vh-100">
+    <div className="container-fluid py-5 min-vh-100 page-enter">
       <div className="container py-4">
         
         <div className="text-center mb-5 pb-3">

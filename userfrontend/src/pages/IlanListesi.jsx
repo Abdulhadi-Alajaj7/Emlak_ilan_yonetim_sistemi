@@ -42,7 +42,7 @@ const IlanListesi = () => {
   );
 
   return (
-    <div className="container-fluid py-5 min-vh-100">
+    <div className="container-fluid py-5 min-vh-100 page-enter">
       <div className="container">
         
         <div className="row mb-5 align-items-center">
@@ -84,8 +84,27 @@ const IlanListesi = () => {
 
         <div className="row">
           <div className="col-lg-3 mb-4 mb-lg-0">
-            <div onClick={() => setCurrentPage(1)}>
+            {/* Desktop Filter */}
+            <div className="d-none d-lg-block" onClick={() => setCurrentPage(1)}>
                <FilterSidebar />
+            </div>
+
+            {/* Mobile Filter Button */}
+            <button className="btn btn-primary bg-primary-custom border-0 w-100 d-lg-none shadow-sm py-3 mb-3 fw-bold" type="button" data-bs-toggle="offcanvas" data-bs-target="#filterOffcanvas">
+              <i className="bi bi-funnel-fill me-2"></i> Detaylı Filtreleme
+            </button>
+
+            {/* Mobile Offcanvas Filter */}
+            <div className="offcanvas offcanvas-start theme-card border-0 shadow" tabIndex="-1" id="filterOffcanvas" aria-labelledby="filterOffcanvasLabel">
+              <div className="offcanvas-header border-bottom border-secondary-subtle">
+                <h5 className="offcanvas-title fw-bold" id="filterOffcanvasLabel">
+                  <i className="bi bi-funnel-fill text-primary-custom me-2"></i> Filtreler
+                </h5>
+                <button type="button" className="btn-close shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              <div className="offcanvas-body" onClick={() => setCurrentPage(1)}>
+                <FilterSidebar />
+              </div>
             </div>
           </div>
 

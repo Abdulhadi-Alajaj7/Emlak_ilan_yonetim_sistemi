@@ -4,7 +4,7 @@ const Hakkimizda = () => {
   const { data: ayarlar, status: ayarlarStatus } = useSelector((state) => state.ayarlar);
 
   return (
-    <div className="min-vh-100 pb-5">
+    <div className="min-vh-100 pb-5 page-enter">
       {/* Hero Section */}
       <div className="position-relative bg-dark text-white py-5 mb-5 overflow-hidden" style={{ minHeight: "400px", display: "flex", alignItems: "center" }}>
         <div className="position-absolute w-100 h-100" style={{ top: 0, left: 0, opacity: 0.2, backgroundImage: "url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')", backgroundSize: "cover", backgroundPosition: "center" }}></div>
